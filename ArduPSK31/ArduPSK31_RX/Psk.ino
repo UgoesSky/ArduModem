@@ -108,8 +108,8 @@ void initPsk()
         //now compare ang to ang of previous symbol
         ang4=ang3; ang3=ang2; ang2=ang1; ang1=ang0; ang0=ang;
         angdiff = ang0-ang4;
-        if (angdiff <0) angdiff+=8;
-        is_space = ((angdiff<2) | (angdiff>6));
+        if (angdiff <0) angdiff+=16;
+        is_space = ((angdiff<4) | (angdiff>12));
         history <<= 1;  
         if (is_space) history |= 0x01;
             
