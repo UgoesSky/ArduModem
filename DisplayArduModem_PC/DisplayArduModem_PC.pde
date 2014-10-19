@@ -35,8 +35,16 @@ void setup()
   }
 }
 
+boolean done = false;
+boolean stop = false;
+
 void mouseClicked() 
 {
+  if (done)
+  {
+    stop = ! stop;
+    return;
+  }
   if ((mouseY > 2) & (mouseY < 25))
   {
     for (int i=0;i<ports;i++)
@@ -46,25 +54,32 @@ void mouseClicked()
         println(actport); 
         
         // Open the port you are using at the rate you want:  
-        myPort = new Serial(this, Serial.list()[actport], 115200); 
+        myPort = new Serial(this, Serial.list()[actport], 115200);
+        myPort.buffer(600); 
+        done = true;
       }
+  }
+}
+
+
+void serialEvent(Serial myPort) 
+{
+  char inByte;
+  int i;
+  int no = myPort.available();
+  for (i=0;i<no;i++) 
+  {
+    inByte = myPort.readChar();
+    if (!stop) putData(inByte);
   }
 }
 
 void draw()
 { 
-  char inByte;
   float inVal;
 
   if (actport == -1) return;
-
-  while (myPort.available() > 0) 
-  {
-    inByte = myPort.readChar();
-    inVal = inByte;
-    putData(inVal);
-  }
-
+  
   // Draw graphPaper
   background(255); // white
   stroke(200); // gray
