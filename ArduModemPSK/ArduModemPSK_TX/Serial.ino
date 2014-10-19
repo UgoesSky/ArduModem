@@ -7,22 +7,6 @@ static volatile uint8_t serialHeadRX,serialTailRX;
 static uint8_t serialBufferRX[RX_BUFFER_SIZE];
 static volatile uint8_t serialHeadTX,serialTailTX;
 static uint8_t serialBufferTX[TX_BUFFER_SIZE];
-static uint8_t serialBuffer[INBUF_SIZE]; // this hold the imcoming string from serial O string
-static uint8_t readIndex;
-
-uint32_t read32() {
-  uint32_t t = read16();
-  t+= (uint32_t)read16()<<16;
-  return t;
-}
-uint16_t read16() {
-  uint16_t t = read8();
-  t+= (uint16_t)read8()<<8;
-  return t;
-}
-uint8_t read8()  {
-  return serialBuffer[readIndex++];
-}
 
 void serialize8(uint8_t a) 
 {
