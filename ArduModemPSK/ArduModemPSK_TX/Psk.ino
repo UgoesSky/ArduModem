@@ -14,16 +14,11 @@ volatile uint8_t serialPSKBuffer[PSK_BUFFER_SIZE];
 
 #if defined (TX)
   #define mydelay 128
-  static const uint8_t sin_table_same[mydelay] =
+  #define SINTABLEN 32
+  static const uint8_t sin_table_same[SINTABLEN] =
   {
     151, 174, 195, 214, 230, 241, 248, 251, 248, 241, 230, 214, 195, 174, 151, 127, 
     103, 80, 59, 40, 24, 13, 6, 3, 6, 13, 24, 40, 59, 80, 103, 127, 
-    151, 174, 195, 214, 230, 241, 248, 251, 248, 241, 230, 214, 195, 174, 151, 127, 
-    103, 80, 59, 40, 24, 13, 6, 3, 6, 13, 24, 40, 59, 80, 103, 127, 
-    151, 174, 195, 214, 230, 241, 248, 251, 248, 241, 230, 214, 195, 174, 151, 127, 
-    103, 80, 59, 40, 24, 13, 6, 3, 6, 13, 24, 40, 59, 80, 103, 127, 
-    151, 174, 195, 214, 230, 241, 248, 251, 248, 241, 230, 214, 195, 174, 151, 127, 
-    103, 80, 59, 40, 24, 13, 6, 3, 6, 13, 24, 40, 59, 80, 103, 127,
   };
   static const uint8_t sin_table_change[mydelay] = 
   {
@@ -97,7 +92,7 @@ void initPsk()
       }  
       else 
       {
-        byte sinval = sin_table_same[phase];
+        byte sinval = sin_table_same[phase%SINTABLEN];
         if (is_invert) OCR2A = sinval ^ 0xFF;
         else           OCR2A = sinval; 
       }
